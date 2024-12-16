@@ -24,9 +24,11 @@ body {
 
 /* Declare heights because of positioning of img element */
 .carousel-item {
-  height: 46rem;
+  height: 35rem;
 }
-
+.carousel-item{
+    background:black;
+}
 
 /* MARKETING CONTENT
 -------------------------------------------------- */
