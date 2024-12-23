@@ -12,8 +12,6 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/carousel/">
 
-
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
     <link href="https://getbootstrap.com/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -193,7 +191,7 @@
                         <a class="nav-link" href="projects.html">Projects</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="presentations.html">Presentations</a>
+                        <a class="nav-link disabled" href="presentations.html" aria-disabled="true">Presentations</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="news.html">News</a>
@@ -211,12 +209,11 @@
 <main>
 
     <div class="container col-md-12 mt-5">
-        <h2>Quantifying the nighttime economy–housing separation from a human activity standpoint: A case study in Shenzhen</h2>
-        <p class="">Li, Mingxiao, Wei Tu, Huan Tong, <a href="">Jinzhou Cao</a>, Chen Zhong, Hengcai Zhang, Jiasong Zhu, and Qingquan Li. 2024</p>
-        <p><a class="btn btn-lg btn-outline-primary" href="about.html">Copy Bibtex</a></p>
+            <h2>Presentations</h2>
+                <p class="opacity-75 lead">Our teams aspire to make discoveries that impact everyone, and core to our approach is sharing our research and tools to fuel progress in the field. .</p>
+
     </div>
-
-
+    <hr class="featurette-divider">
 
     <!-- Marketing messaging and featurettes
     ================================================== -->
@@ -225,15 +222,73 @@
     <div class="container marketing">
 
         <!-- START THE FEATURETTES -->
-        <hr class="featurette-divider">
+
+<!--        <hr class="featurette-divider">-->
 
         <div class="row featurette">
             <div class="col-md-2">
-                <h2>Abstract</h2>
+                <h6>Filter by:</h6>
+                <hr>
+                <div class="dropdown mb-2" style="width: 100%;">
+                    <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Research area
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="col-md-10">
-                <p>Augmenting LLMs with context leads to improved performance across many applications. Despite much research on Retrieval Augmented Generation (RAG) systems, an open question is whether errors arise because LLMs fail to utilize the context from retrieval or the context itself is insufficient to answer the query. To shed light on this, we develop a new notion of sufficient context, along with a way to classify instances that have enough information to answer the query. We then use sufficient context to analyze several models and datasets. By stratifying errors based on context sufficiency, we find that proprietary LLMs (Gemini, GPT, Claude) excel at answering queries when the context is sufficient, but often output incorrect answers instead of abstaining when the context is not. On the other hand, open-source LLMs (Llama, Mistral, Gemma) hallucinate or abstain often, even with sufficient context. We further categorize cases when the context is useful, and improves accuracy, even though it does not fully answer the query and the model errs without the context. Building on our findings, we explore ways to reduce hallucinations in RAG systems, including a new selective generation method that leverages sufficient context information for guided abstention. Our method improves the fraction of correct answers among times where the model responds by 2--10% for Gemini, GPT, and Gemma.
-                </p>
+                <h6>1 - 6 of 12 projects</h6>
+                <hr>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="https://profiles.ucl.ac.uk/46973/photo" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">realTrips</h5>
+                                <p class="card-title">Project Lead: Chen Zhong</p>
+                                <p class="card-text">This is a longer below lead-in to additional content. This content is a little bit longer.</p>
+                                <a href="">Learn more</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="https://profiles.ucl.ac.uk/95256-adham-enaya/photo" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Gaza Places</h5>
+                                <p class="card-title">Project Lead: Adham Enaya</p>
+                                <p class="card-text">This is a longer below lead-in to additional content. This content is a little bit longer.</p>
+                                <a href="">Learn more</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="https://profiles.ucl.ac.uk/86076-yikang-wang/photo" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="..." class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 

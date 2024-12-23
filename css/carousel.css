@@ -24,10 +24,9 @@ body {
 
 /* Declare heights because of positioning of img element */
 .carousel-item {
-  height: 25rem;
 }
 .carousel-item{
-    background:black;
+    background:red;
 }
 
 /* MARKETING CONTENT
