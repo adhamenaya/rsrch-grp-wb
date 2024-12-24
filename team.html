@@ -210,7 +210,7 @@
                 </div>
             </div>
             <div class="col-md-10">
-                <h6>1 - 15 of 10173 publications</h6>
+                <h6>23 Researchers</h6>
                 <hr>
                 <div class="row row-cols-1 row-cols-md-3 g-4" id="card-container">
 <!--                    <div class="col">-->
@@ -305,7 +305,7 @@
             const fileIdMatch = url.match(/(?:id=|\/d\/)([\w-]+)/); // Extract file ID
             const fileId = fileIdMatch ? fileIdMatch[1] : null;
             if (fileId) {
-               return `https://drive.usercontent.google.com/download?id=${fileId}&authuser=0`;
+                return `https://lh3.googleusercontent.com/d/${fileId}=s4000?authuser=0`;
             }
             return 'default_image_url.jpg'; // Fallback URL for missing images
         }
@@ -317,18 +317,22 @@
 
             // Loop through the data and create a card for each item
             data.forEach(item => {
-                const cardHtml = `
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="${GenerateImageDirect(item.Image)}" class="card-img-top" alt="Profile Image">
-                            <div class="card-body">
-                                <h5 class="card-title">${item.Name || "No Name"}</h5>
-                                <p class="card-text">${item.Bio || "No description available."}</p>
+                if(item.Active=="Yes"){
+                    const cardHtml = `
+                        <div class="col">
+                            <div class="card h-100">
+                                <img src="${GenerateImageDirect(item.Image)}" class="card-img-top" alt="Profile Image">
+                                <div class="card-body">
+                                    <h5 class="card-title">${item.Name || "No Name"}</h5>
+                                    <p class="card-text">${item.Bio || "No description available."}</p>
+                                    Linkedin: <a href="${item.Linkedin}">${item.Linkedin}</a>
+                                    Github: <a href="${item.Linkedin}">${item.Github}</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
-                container.append(cardHtml);
+                    `;
+                    container.append(cardHtml);
+                }
             });
         }
     });
