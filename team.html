@@ -284,45 +284,90 @@
             }
         });
 
+        // Function to parse CSV data
         function parseCSV(data) {
-            const lines = data.split("\n");
+            const lines = data.split("\n").map(line => line.trim()); // Remove unnecessary whitespace
             const headers = lines[0].split(",");
             const rows = lines.slice(1).map(line => line.split(","));
 
+            // Return array of objects
             return rows.map(row => {
                 const obj = {};
                 headers.forEach((header, index) => {
-                    obj[header.trim()] = row[index]?.trim();
+                    obj[header.trim()] = row[index]?.trim();  // Handle empty or undefined values safely
                 });
                 return obj;
             });
         }
-        function GenerateImageDirect(url){
-            const fileIdMatch = url.match(/(?:id=|\/d\/)([\w-]+)/);
-            const fileId = fileIdMatch ? fileIdMatch[1] : null;
-            const directUrl = `https://drive.usercontent.google.com/download?id=${fileId}&authuser=0`;
-            return directUrl;
-        }
-        function populateCards(data) {
-                const container = $("#card-container");
-                container.empty();
 
-                data.forEach(item => {
-                    const cardHtml = `
-                        <div class="col">
-                            <div class="card h-100">
-                                <img src="${GenerateImageDirect(item.Image)}" class="card-img-top" alt="Profile Image">
-                                <div class="card-body">
-                                    <h5 class="card-title">${item.Name || "No Name"}</h5>
-                                    <p class="card-text">${item.Bio || "No description available."}</p>
+        // Function to generate the direct image URL from Google Drive
+        function GenerateImageDirect(url){
+            const fileIdMatch = url.match(/(?:id=|\/d\/)([\w-]+)/); // Extract file ID
+            const fileId = fileIdMatch ? fileIdMatch[1] : null;
+
+            if (fileId) {
+                return `https://drive.usercontent.google.com/download?id=${fileId}&authuser=0`; // Correct Google Drive direct image URL
+            }
+            return 'default_image_url.jpg'; // Fallback URL for missing images
+        }
+
+        // Function to load the image dynamically at runtime
+        function loadImage(url) {
+            return new Promise((resolve, reject) => {
+                const img = new Image(); // Create a new image element
+                img.onload = () => resolve(img); // Resolve promise once image is loaded
+                img.onerror = () => reject('Image failed to load'); // Reject if loading fails
+                img.src = url; // Set image source to start loading
+            });
+        }
+
+        // Function to populate the cards with data from CSV
+        function populateCards(data) {
+            const container = $("#card-container");
+            container.empty(); // Clear existing content
+
+            // Loop through the data and create a card for each item
+            data.forEach(item => {
+                const imageUrl = GenerateImageDirect(item.Image);
+
+                // Dynamically load the image before creating the card
+                loadImage(imageUrl)
+                    .then(img => {
+                        // Once image is loaded, create and append the card
+                        const cardHtml = `
+                            <div class="col">
+                                <div class="card h-100">
+                                    <img src="${img.src}" class="card-img-top" alt="Profile Image">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${item.Name || "No Name"}</h5>
+                                        <p class="card-text">${item.Bio || "No description available."}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    `;
-                    container.append(cardHtml);
-                });
-          }
+                        `;
+                        container.append(cardHtml);
+                    })
+                    .catch(err => {
+                        console.error('Image load error:', err);
+                        // Fallback for image loading error
+                        const fallbackCardHtml = `
+                            <div class="col">
+                                <div class="card h-100">
+                                    <img src="default_image_url.jpg" class="card-img-top" alt="Profile Image">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${item.Name || "No Name"}</h5>
+                                        <p class="card-text">${item.Bio || "No description available."}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        container.append(fallbackCardHtml);
+                    });
+            });
+        }
     });
 </script>
+
+
 </body>
 </html>
