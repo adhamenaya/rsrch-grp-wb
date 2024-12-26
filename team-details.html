@@ -109,6 +109,23 @@
         .bd-mode-toggle .dropdown-menu .active .bi {
           display: block !important;
         }
+
+        .crop-container {
+            width: 341px; /* Set the desired width */
+            height: 200px; /* Set the desired height */
+            overflow: hidden; /* Hide overflow to crop */
+            position: relative;
+        }
+
+        .crop-container img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%; /* Optional: Adjust width/height */
+            height: auto; /* Ensures it fills the container height */
+        }
+
     </style>
 
 
@@ -157,10 +174,10 @@
                         <a class="nav-link" href="projects.html">Projects</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="presentations.html" >Presentations</a>
+                        <a class="nav-link" href="presentations.html">Presentations</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="news.html" aria-disabled="true">News</a>
+                        <a class="nav-link" href="news.html">News</a>
                     </li>
                 </ul>
                 <form class="d-flex" role="search">
@@ -175,52 +192,76 @@
 <main>
 
     <div class="container col-md-12 mt-5">
-            <h1>News</h1>
-                <p class="opacity-75 lead">The latest research from our projects and researchers.</p>
-
+        <div class="row featurette">
+            <div class="col-md-2">
+                <img src="https://lh3.googleusercontent.com/d/1TaoOyYSKTOYqiZT9Qh-3-VevqykEhHKB=s4000?authuser=0" class="card-img-top" alt="...">
+            </div>
+            <div class="col-md-10">
+                <h1>Adham Enaya</h1>
+                <p class="lead">PhD Student</p>
+                <p>Augmenting LLMs with context lead sufficient even though it does not fully answer the query and the model errs without the context. Building on our findings, we explore ways to reduce hallucinations in RAG systems, including a new selective generation method that leverages sufficient context information for guided abstention. Our method improves the fraction of corrGemini, GPT, and Gemma.
+                </p>
+                <p><a class="btn btn-md btn-outline-primary" href="about.html">Linkedin</a>
+                <a class="btn btn-md btn-outline-primary" href="about.html">Github</a>
+                <a class="btn btn-md btn-outline-primary" href="about.html">Email</a>
+                <a class="btn btn-md btn-outline-primary" href="about.html">Website</a>
+                <a class="btn btn-md btn-outline-primary" href="about.html">Copy Bibtex</a></p>
+            </div>
+        </div>
     </div>
-    <hr class="featurette-divider">
-
-    <!-- Marketing messaging and featurettes
-    ================================================== -->
-    <!-- Wrap the rest of the page in another container to center all the content. -->
 
     <div class="container marketing">
 
         <!-- START THE FEATURETTES -->
-
-<!--        <hr class="featurette-divider">-->
+        <hr class="featurette-divider">
 
         <div class="row featurette">
             <div class="col-md-2">
-                <h6>Filter by:</h6>
-                <hr>
-                <div class="dropdown mb-2" style="width: 100%;">
-                    <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Year
-                    </a>
-
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </div>
-                <div class="dropdown mb-2" style="width: 100%;">
-                    <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Label
-                    </a>
-
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </div>
+                <h3>Publications</h3>
             </div>
             <div class="col-md-10">
-                <h6>1 - 6 of 12 news</h6>
                 <hr>
+                <table class="table">
+                    <!--                    <thead>-->
+                    <!--                    <tr>-->
+                    <!--                        <th scope="col"></th>-->
+                    <!--                        <th scope="col"></th>-->
+                    <!--                    </tr>-->
+                    <!--                    </thead>-->
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>
+                            <a href="publications-details.html?id=1" target="_blank">Quantifying the nighttime economy–housing separation from a human activity standpoint: A case study in Shenzhen
+                            </a><br>
+                            Li, Mingxiao, Wei Tu, Huan Tong, Jinzhou Cao, Chen Zhong, Hengcai Zhang, Jiasong Zhu, and Qingquan Li. - 2024
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>
+                            <a href="publications-details.html?id=2" target="_blank">AI for Sustainable Cities</a><br>
+                            Alice Brown, Mark White - 2022
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>
+                            <a href="publications-details.html?id=3" target="_blank">Advancing Urban Analytics</a><br>
+                            Emily Green, Michael Blue - 2023
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div class="row featurette">
+            <div class="col-md-2">
+                <h3>Presentations</h3>
+            </div>
+            <div class="col-md-10">
+                <br />
                 <div class="row row-cols-1 row-cols-md-3 g-4">
 
                     <div class="col">

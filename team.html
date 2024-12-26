@@ -177,7 +177,7 @@
 <main>
 
     <div class="container col-md-12 mt-5">
-            <h2>Team</h2>
+            <h1>Team</h1>
                 <p class="opacity-75 lead">Our researchers drive advancements in computer science through both fundamental and applied research.</p>
 
     </div>
@@ -294,7 +294,18 @@
                 console.error("Failed to fetch the CSV data.");
             }
         });
+        function formatText(inputText) {
+            // Convert to lowercase
+            let formattedText = inputText.toLowerCase();
 
+            // Replace spaces with underscores
+            formattedText = formattedText.replace(/\s+/g, '_');
+
+            // Remove special characters (keep only alphanumeric and underscores)
+            formattedText = formattedText.replace(/[^a-z0-9_]/g, '');
+
+            return formattedText;
+        }
         // Function to parse CSV data
         function parseCSV(data) {
             const lines = data.split("\n").map(line => line.trim()); // Remove unnecessary whitespace
@@ -334,7 +345,7 @@
                             <div class="card h-100">
                                 <img src="${GenerateImageDirect(item.Image)}" class="card-img-top" alt="Profile Image">
                                 <div class="card-body">
-                                    <h5 class="card-title">${item.Name || "No Name"}</h5>
+                                    <h5 class="card-title"><a href="team-details.html?name=${formatText(item.Name)}">${item.Name || "No Name"}</a></h5>
                                     <p class="card-text">${item.Bio || "No description available."}</p>
                                     Linkedin: <a href="${item.Linkedin}">${item.Linkedin}</a>
                                     Github: <a href="${item.Linkedin}">${item.Github}</a>
