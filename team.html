@@ -195,33 +195,28 @@
 
         <div class="row featurette">
             <div class="col-md-2">
-                <h6>Filter by:</h6>
+                <p>Filter by:</p>
                 <hr>
                 <div class="dropdown mb-2" style="width: 100%;">
-                    <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="research-area-dropdown">
                         Research area
                     </a>
-
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <ul class="dropdown-menu" id="topics-dropdown">
+                        <!-- Topics will be populated here -->
                     </ul>
                 </div>
+
                 <div class="dropdown mb-2" style="width: 100%;">
-                    <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="job-dropdown">
                         Job
                     </a>
-
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <ul class="dropdown-menu" id="jobs-dropdown">
+                        <!-- Jobs will be populated here -->
                     </ul>
                 </div>
             </div>
             <div class="col-md-10">
-                <h6>23 Researchers</h6>
+                <p id="filter-stats">Loading data...</p>
                 <hr>
                 <div class="row row-cols-1 row-cols-md-3 g-4" id="card-container">
 <!--                    <div class="col">-->
@@ -282,18 +277,44 @@
 <script>
     $(document).ready(function () {
         const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPbpxDo8NerXQ7B9naVtr84J6YtuHhJs_bGquR9tZauflb5rEjJa5XSkLvmpvp_Eq6Ft6CoUXmG4Uz/pub?output=csv&" + new Date().getTime();
+        // Initialize objects to store topics and jobs with counts
+        const topicCounts = {};
+        const jobCounts = {};
 
         $.ajax({
             url: csvUrl,
             dataType: "text",
             success: function (data) {
                 const parsedData = parseCSV(data);
+                populateDropdowns(topicCounts, jobCounts);
                 populateCards(parsedData);
             },
             error: function () {
                 console.error("Failed to fetch the CSV data.");
             }
         });
+         function populateDropdowns(topicCounts, jobCounts) {
+            // Clear existing items from the dropdowns
+            $('#topics-dropdown').empty();
+            $('#jobs-dropdown').empty();
+
+              const item = `<li><a class="dropdown-item" href="team.html">Show All</a></li>`;
+              $('#jobs-dropdown').append(item);
+              $('#topics-dropdown').append(item);
+
+            // Populate the topics dropdown
+            for (const topic in topicCounts) {
+                const item = `<li><a class="dropdown-item" href="?topic=${formatText(topic)}">${topic} (${topicCounts[topic]})</a></li>`;
+                $('#topics-dropdown').append(item);
+            }
+
+            // Populate the jobs dropdown
+            for (const job in jobCounts) {
+                const item = `<li><a class="dropdown-item" href="?job=${formatText(job)}">${job} (${jobCounts[job]})</a></li>`;
+                $('#jobs-dropdown').append(item);
+            }
+        }
+
         function formatText(inputText) {
             // Convert to lowercase
             let formattedText = inputText.toLowerCase();
@@ -306,6 +327,16 @@
 
             return formattedText;
         }
+        function reverseFormatText(formattedText) {
+            // Restore spaces by replacing underscores with spaces
+            let originalText = formattedText.replace(/_/g, ' ');
+
+            // Capitalize the first letter of each word to revert to original casing
+            originalText = originalText.replace(/\b\w/g, char => char.toUpperCase());
+
+            return originalText;
+        }
+
         // Function to parse CSV data
         function parseCSV(data) {
             const lines = data.split("\n").map(line => line.trim()); // Remove unnecessary whitespace
@@ -318,6 +349,24 @@
                 headers.forEach((header, index) => {
                     obj[header.trim()] = row[index]?.trim();  // Handle empty or undefined values safely
                 });
+
+               // Add unique topics and count occurrences
+                if (obj.Topic) {
+                    if (!topicCounts[obj.Topic]) {
+                        topicCounts[obj.Topic] = 1;
+                    } else {
+                        topicCounts[obj.Topic]++;
+                    }
+                }
+
+                // Add unique jobs and count occurrences
+                if (obj.Job) {
+                    if (!jobCounts[obj.Job]) {
+                        jobCounts[obj.Job] = 1;
+                    } else {
+                        jobCounts[obj.Job]++;
+                    }
+                }
                 return obj;
             });
         }
@@ -331,15 +380,60 @@
             }
             return 'default_image_url.jpg'; // Fallback URL for missing images
         }
+        function getURLParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        function filterDataByParam(data) {
+            const topic = getURLParameter('topic');
+            const job = getURLParameter('job');
+
+            return data.filter(item => {
+                // If 'topic' parameter exists, filter by topic
+                if (topic && formatText(item.Topic) !== topic) {
+                    return false; // Exclude this item if topic doesn't match
+                }
+
+                // If 'job' parameter exists, filter by job
+                if (job && formatText(item.Job) !== job) {
+                    return false; // Exclude this item if job doesn't match
+                }
+
+                return true; // Include item if either topic or job matches
+            });
+        }
 
         // Function to populate the cards with data from CSV
         function populateCards(data) {
             const container = $("#card-container");
+            const filterStats = $("#filter-stats");
             container.empty(); // Clear existing content
 
-            // Loop through the data and create a card for each item
-            data.forEach(item => {
-                if(item.Active=="Yes"){
+            // Filter the data based on URL params (either topic or job)
+            const filteredData = filterDataByParam(data);
+
+            // Get the selected filter parameters
+            const topic = getURLParameter('topic');
+            const job = getURLParameter('job');
+
+            // Construct filter status text
+            let filterText = `${filteredData.length} ${filteredData.length === 1 ? 'Researcher' : 'Researchers'}`;
+
+            // Check if topic or job exists
+            if (topic) {
+                filterText += ` | Topic: ${decodeURIComponent(reverseFormatText(topic))}`;
+            }
+
+            if (job) {
+                filterText += ` | Job: ${decodeURIComponent(reverseFormatText(job))}`;
+            }
+
+            // Update the filter stats text
+            filterStats.text(filterText);
+
+            // Loop through the filtered data and create a card for each item
+            filteredData.forEach(item => {
+                if(item.Active === "Yes") {
                     const cardHtml = `
                         <div class="col">
                             <div class="card h-100">
