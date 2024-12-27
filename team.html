@@ -336,6 +336,14 @@
 
             return originalText;
         }
+        function truncateText(text, maxLength) {
+          if (text.length > maxLength) {
+            const truncatedText = text.substring(0, maxLength) + '...';
+            return truncatedText;
+          }
+          return text;
+        }
+
 
         // Function to parse CSV data
         function parseCSV(data) {
@@ -448,9 +456,9 @@
                             <img src="${GenerateImageDirect(item.Image)}" class="card-img-top" alt="Profile Image">
                             <div class="card-body">
                                 <h5 class="card-title"><a href="team-details.html?name=${formatText(item.Name)}">${item.Name || "No Name"}</a></h5>
-                                <p class="card-text">${item.Bio || "No description available."}</p>
-                                Linkedin: <a href="${item.Linkedin}">${item.Linkedin}</a>
-                                Github: <a href="${item.Github}">${item.Github}</a>
+                                <p class="card-text">${truncateText(item.Bio, 150) || "No description available."}</p>
+                                <a href="${item.Linkedin}">Linkedin</a>
+                                - <a href="${item.Github}">Github</a>
                             </div>
                         </div>
                     </div>
