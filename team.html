@@ -349,24 +349,27 @@
                 headers.forEach((header, index) => {
                     obj[header.trim()] = row[index]?.trim();  // Handle empty or undefined values safely
                 });
+                // Count only objects that are active
+                if (obj.Active.toLowerCase() === "yes") {
+                    // Add unique topics and count occurrences
+                    if (obj.Topic) {
+                        if (!topicCounts[obj.Topic]) {
+                            topicCounts[obj.Topic] = 1;
+                        } else {
+                            topicCounts[obj.Topic]++;
+                        }
+                    }
 
-               // Add unique topics and count occurrences
-                if (obj.Topic) {
-                    if (!topicCounts[obj.Topic]) {
-                        topicCounts[obj.Topic] = 1;
-                    } else {
-                        topicCounts[obj.Topic]++;
+                    // Add unique jobs and count occurrences
+                    if (obj.Job) {
+                        if (!jobCounts[obj.Job]) {
+                            jobCounts[obj.Job] = 1;
+                        } else {
+                            jobCounts[obj.Job]++;
+                        }
                     }
                 }
 
-                // Add unique jobs and count occurrences
-                if (obj.Job) {
-                    if (!jobCounts[obj.Job]) {
-                        jobCounts[obj.Job] = 1;
-                    } else {
-                        jobCounts[obj.Job]++;
-                    }
-                }
                 return obj;
             });
         }
@@ -389,6 +392,11 @@
             const job = getURLParameter('job');
 
             return data.filter(item => {
+                // Check if 'Active' is "Yes" or "yes"
+                if (item.Active !== "Yes" && item.Active !== "yes") {
+                    return false; // Exclude item if Active is not "Yes" or "yes"
+                }
+
                 // If 'topic' parameter exists, filter by topic
                 if (topic && formatText(item.Topic) !== topic) {
                     return false; // Exclude this item if topic doesn't match
@@ -399,8 +407,9 @@
                     return false; // Exclude this item if job doesn't match
                 }
 
-                return true; // Include item if either topic or job matches
+                return true; // Include item if all conditions are satisfied
             });
+
         }
 
         // Function to populate the cards with data from CSV
@@ -432,23 +441,21 @@
             filterStats.text(filterText);
 
             // Loop through the filtered data and create a card for each item
-            filteredData.forEach(item => {
-                if(item.Active === "Yes") {
-                    const cardHtml = `
-                        <div class="col">
-                            <div class="card h-100">
-                                <img src="${GenerateImageDirect(item.Image)}" class="card-img-top" alt="Profile Image">
-                                <div class="card-body">
-                                    <h5 class="card-title"><a href="team-details.html?name=${formatText(item.Name)}">${item.Name || "No Name"}</a></h5>
-                                    <p class="card-text">${item.Bio || "No description available."}</p>
-                                    Linkedin: <a href="${item.Linkedin}">${item.Linkedin}</a>
-                                    Github: <a href="${item.Linkedin}">${item.Github}</a>
-                                </div>
+           filteredData.forEach(item => {
+                const cardHtml = `
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="${GenerateImageDirect(item.Image)}" class="card-img-top" alt="Profile Image">
+                            <div class="card-body">
+                                <h5 class="card-title"><a href="team-details.html?name=${formatText(item.Name)}">${item.Name || "No Name"}</a></h5>
+                                <p class="card-text">${item.Bio || "No description available."}</p>
+                                Linkedin: <a href="${item.Linkedin}">${item.Linkedin}</a>
+                                Github: <a href="${item.Github}">${item.Github}</a>
                             </div>
                         </div>
-                    `;
-                    container.append(cardHtml);
-                }
+                    </div>
+                `;
+                container.append(cardHtml);
             });
         }
     });
